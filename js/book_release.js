@@ -749,7 +749,7 @@ jQuery.effects||function(a,b){function c(b){var c;return b&&b.constructor==Array
                                 }
                             }
                             if(i == 0) {
-                                pageSelector.find('.b-current').text(listItemNumbers);
+                                pageSelector.find('.b-current').text( options.closedFrontTitle );
                             }
 
                             // get the title
@@ -770,962 +770,1023 @@ jQuery.effects||function(a,b){function c(b){var c;return b&&b.constructor==Array
                             if(!options.hash) {
                                 pageListItem.find('a').bind('click.booklet', function () {
                                     if(options.direction == directions.rightToLeft) {
-                                        pageSelector.find('.b-current').text($(this).find('.b-num').text());
+                                        var t = $(this).find('.b-num').text();
+                                        if ( t.length == 0 )
+                                            t = $(this).find('.b-text').text();
+                                        pageSelector.find('.b-current').text( t );
                                         goToPage(Math.abs(parseInt($(this).attr('id').replace('selector-page-', '')) - options.pageTotal) - 2);
-                                    } else {
+                                    } else { //js/jquery.booklet.latest.js:580//
                                         goToPage(parseInt($(this).attr('id').replace('selector-page-', '')));
                                     }
-                                    return false; //js/jquery.booklet.latest.js:580//
+                                    return false;
                                 });
                             }
                         }
 
                         // set height
                         pageSelectorHeight = pageSelectorList.height();
-                        pageSelectorList.css({'height': 0, 'padding-bottom': 0});
+                        pageSelectorList.css({'height': 0, 'padding-bottom': 0}); //js/jquery.booklet.latest.js:590//
 
                         // add hover effects
-                        pageSelector.bind('mouseenter.booklet', function () { //js/jquery.booklet.latest.js:590//
+                        pageSelector.bind('mouseenter.booklet', function () {
                             pageSelectorList.stop().animate({height: pageSelectorHeight, paddingBottom: 10}, 500);
                         }).bind('mouseleave.booklet', function () {
                                 pageSelectorList.stop().animate({height: 0, paddingBottom: 0}, 500);
                             });
                     } else if (!options.pageSelector) {
                         menu.find('.b-selector-page').remove();
-                        pageSelector = pageSelectorList = listItemNumbers = listItemTitle = pageListItem = pageSelectorHeight = null;
+                        pageSelector = pageSelectorList = listItemNumbers = listItemTitle = pageListItem = pageSelectorHeight = null; //js/jquery.booklet.latest.js:600//
                     }
 
-                    // setup chapter selector //js/jquery.booklet.latest.js:600//
+                    // setup chapter selector
                     if(options.chapterSelector && menu.find('.b-selector-chapter').length == 0) {
 
                         chapter = pages[options.currentIndex].chapter;
                         if(chapter == "") {
                             chapter = pages[options.currentIndex + 1].chapter;
                         }
-
+ //js/jquery.booklet.latest.js:610//
                         chapterSelector = $('<div class="b-selector b-selector-chapter"><span class="b-current">' + chapter + '</span></div>').appendTo(menu);
                         chapterSelectorList = $('<ul></ul>').appendTo(chapterSelector).empty().css('height', 'auto');
- //js/jquery.booklet.latest.js:610//
+
                         for(i = 0; i < options.pageTotal; i += 1) {
                             if(pages[i].chapter != "" && typeof pages[i].chapter != "undefined") {
                                 if(options.direction == directions.rightToLeft) {
                                     j = i;
                                     if(j % 2 != 0) {
                                         j--;
-                                    }
+                                    } //js/jquery.booklet.latest.js:620//
                                     chapterSelector.find('.b-current').text(pages[i].chapter);
                                     chapterListItem = $('<li><a href="#' + hashRoot + (j + 1) + '" id="selector-page-' + (j) + '"><span class="b-text">' + pages[i].chapter + '</span></a></li>').prependTo(chapterSelectorList);
-                                } else { //js/jquery.booklet.latest.js:620//
+                                } else {
                                     chapterListItem = $('<li><a href="#' + hashRoot + (i + 1) + '" id="selector-page-' + i + '"><span class="b-text">' + pages[i].chapter + '</span></a></li>').appendTo(chapterSelectorList);
                                 }
                                 if(!options.hash) {
                                     chapterListItem.find('a').bind('click.booklet', function () {
                                         if(options.direction == directions.rightToLeft) {
                                             chapterSelector.find('.b-current').text($(this).find('.b-text').text());
-                                            goToPage(Math.abs(parseInt($(this).attr('id').replace('selector-page-', '')) - options.pageTotal) - 2);
+                                            goToPage(Math.abs(parseInt($(this).attr('id').replace('selector-page-', '')) - options.pageTotal) - 2); //js/jquery.booklet.latest.js:630//
                                         } else {
                                             goToPage(parseInt($(this).attr('id').replace('selector-page-', '')));
-                                        } //js/jquery.booklet.latest.js:630//
+                                        }
                                         return false;
                                     });
                                 }
                             }
                         }
 
-                        chapterSelectorHeight = chapterSelectorList.height();
+                        chapterSelectorHeight = chapterSelectorList.height(); //js/jquery.booklet.latest.js:640//
                         chapterSelectorList.css({'height': 0, 'padding-bottom': 0});
 
-                        chapterSelector.bind('mouseenter.booklet', function () { //js/jquery.booklet.latest.js:640//
+                        chapterSelector.bind('mouseenter.booklet', function () {
                             chapterSelectorList.stop().animate({height: chapterSelectorHeight, paddingBottom: 10}, 500);
                         }).bind('mouseleave.booklet', function () {
                                 chapterSelectorList.stop().animate({height: 0, paddingBottom: 0}, 500);
                             });
                     } else if (!options.chapterSelector) {
                         menu.find('.b-selector-chapter').remove();
-                        chapter = chapterSelector = chapterSelectorList = chapterListItem = chapterSelectorHeight = null;
+                        chapter = chapterSelector = chapterSelectorList = chapterListItem = chapterSelectorHeight = null; //js/jquery.booklet.latest.js:650//
                     }
 
-                } else { //js/jquery.booklet.latest.js:650//
+                } else {
                     menu = null;
                     if(options.menu){
                         $(options.menu).removeClass('b-menu');
                     }
                     target.find('.b-selector').remove();
                 }
-
+ //js/jquery.booklet.latest.js:660//
                 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-                ctrls = target.find('.b-controls'); //js/jquery.booklet.latest.js:660//
+                ctrls = target.find('.b-controls');
                 if(ctrls.length == 0) {
                     ctrls = $('<div class="b-controls"></div>').appendTo(target);
                 }
 
                 // force no overlays if using manual controls
                 if(options.manual && $.ui) {
-                    options.overlays = false;
+                    options.overlays = false; //js/jquery.booklet.latest.js:670//
                 }
 
-                // user defined prev next controls //js/jquery.booklet.latest.js:670//
+                // user defined prev next controls
                 if (customN) {
                     customN.unbind('click.booklet');
                 }
                 if(options.next && $(options.next).length > 0) {
                     customN = $(options.next);
                     customN.bind('click.booklet', function (e) {
-                        e.preventDefault();
+                        e.preventDefault(); //js/jquery.booklet.latest.js:680//
                         next();
                     });
-                } else { //js/jquery.booklet.latest.js:680//
+                } else {
                     customN = null;
                 }
                 if (customP) {
                     customP.unbind('click.booklet');
                 }
                 if(options.prev && $(options.prev).length > 0) {
-                    customP = $(options.prev);
+                    customP = $(options.prev); //js/jquery.booklet.latest.js:690//
                     customP.bind('click.booklet', function (e) {
                         e.preventDefault();
-                        prev(); //js/jquery.booklet.latest.js:690//
+                        prev();
                     });
                 } else {
                     customP = null;
                 }
 
                 // add overlays
-                overlaysB = target.find('.b-overlay');
+                overlaysB = target.find('.b-overlay'); //js/jquery.booklet.latest.js:700//
                 if(options.overlays && overlaysB.length == 0) {
                     overlayP = $('<div class="b-overlay b-overlay-prev b-prev" title="' + options.previousControlTitle + '"></div>').appendTo(ctrls);
-                    overlayN = $('<div class="b-overlay b-overlay-next b-next" title="' + options.nextControlTitle + '"></div>').appendTo(ctrls); //js/jquery.booklet.latest.js:700//
+                    overlayN = $('<div class="b-overlay b-overlay-next b-next" title="' + options.nextControlTitle + '"></div>').appendTo(ctrls);
                     overlaysB = target.find('.b-overlay');
                     // ie fix
                     if($.browser.msie) {
                         overlaysB.css({'background': '#fff', 'filter': 'progid:DXImageTransform.Microsoft.Alpha(opacity=0) !important'});
                     }
                 } else if (!options.overlays) {
-                    overlaysB.remove();
+                    overlaysB.remove(); //js/jquery.booklet.latest.js:710//
                     overlaysB = null;
                 }
- //js/jquery.booklet.latest.js:710//
+
                 // add tabs
                 tabs = target.find('.b-tab');
                 if(options.tabs && tabs.length == 0) {
                     tabP = $('<div class="b-tab b-tab-prev b-prev" title="' + options.previousControlTitle + '">' + options.previousControlText + '</div>').appendTo(ctrls);
                     tabN = $('<div class="b-tab b-tab-next b-next" title="' + options.nextControlTitle + '">' + options.nextControlText + '</div>').appendTo(ctrls);
                     tabs = target.find('.b-tab');
-                } else if (!options.tabs) {
+                } else if (!options.tabs) { //js/jquery.booklet.latest.js:720//
                     target.css({'marginTop': 0});
                     tabs.remove();
-                    tabs = null; //js/jquery.booklet.latest.js:720//
+                    tabs = null;
                 }
 
                 // update tab css, options might have changed
                 if (options.tabs && tabs.length > 0) {
                     if(options.tabWidth) {
                         tabs.width(options.tabWidth);
-                    }
+                    } //js/jquery.booklet.latest.js:730//
                     if(options.tabHeight) {
                         tabs.height(options.tabHeight);
-                    } //js/jquery.booklet.latest.js:730//
+                    }
 
                     tabs.css({'top': '-' + tabN.outerHeight() + 'px'});
                     target.css({'marginTop': tabN.outerHeight()});
 
                     // update controls for RTL direction
                     if(options.direction == directions.rightToLeft) {
-                        tabN.html(options.previousControlText).attr('title', options.previousControlTitle);
+                        tabN.html(options.previousControlText).attr('title', options.previousControlTitle); //js/jquery.booklet.latest.js:740//
                         tabP.html(options.nextControlText).attr('title', options.nextControlTitle);
                     }
-                } //js/jquery.booklet.latest.js:740//
+                }
 
                 // add arrows
                 arrows = target.find('.b-arrow');
                 if(options.arrows && arrows.length == 0) {
                     arrowP = $('<div class="b-arrow b-arrow-prev b-prev" title="' + options.previousControlTitle + '"><div>' + options.previousControlText + '</div></div>').appendTo(ctrls);
                     arrowN = $('<div class="b-arrow b-arrow-next b-next" title="' + options.nextControlTitle + '"><div>' + options.nextControlText + '</div></div>').appendTo(ctrls);
-                    arrows = target.find('.b-arrow');
+                    arrows = target.find('.b-arrow'); //js/jquery.booklet.latest.js:750//
 
                     // update ctrls for RTL direction
-                    if(options.direction == directions.rightToLeft) { //js/jquery.booklet.latest.js:750//
+                    if(options.direction == directions.rightToLeft) {
                         arrowN.html('<div>' + options.previousControlText + '</div>').attr('title', options.previousControlTitle);
                         arrowP.html('<div>' + options.nextControlText + '</div>').attr('title', options.nextControlTitle);
                     }
                 } else if (!options.arrows) {
                     arrows.remove();
                     arrows = null;
-                }
+                } //js/jquery.booklet.latest.js:760//
 
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
- //js/jquery.booklet.latest.js:760//
+
                 // save all "b-prev" and "b-next" controls
                 ctrlsN = ctrls.find('.b-next');
                 ctrlsP = ctrls.find('.b-prev');
 
                 // reset all bound events
                 ctrlsN.unbind(".booklet");
-                ctrlsP.unbind(".booklet");
+                ctrlsP.unbind(".booklet"); //js/jquery.booklet.latest.js:770//
 
                 // add click actions
-                ctrlsN.bind('click.booklet', function (e) { //js/jquery.booklet.latest.js:770//
+                ctrlsN.bind('click.booklet', function (e) {
                     e.preventDefault();
                     next();
                 });
                 ctrlsP.bind('click.booklet', function (e) {
                     e.preventDefault();
                     prev();
-                });
+                }); //js/jquery.booklet.latest.js:780//
 
                 // add page hover animations
-                if(options.overlays && options.hovers) { //js/jquery.booklet.latest.js:780//
+                if(options.overlays && options.hovers) {
                     // hovers to start draggable forward
                     ctrlsN.bind("mouseover.booklet", function () {
                         startHoverAnimation(true);
                     }).bind("mouseout.booklet", function () {
                             endHoverAnimation(true);
                         });
-
+ //js/jquery.booklet.latest.js:790//
                     // hovers to start draggable backwards
                     ctrlsP.bind("mouseover.booklet", function () {
-                        startHoverAnimation(false); //js/jquery.booklet.latest.js:790//
+                        startHoverAnimation(false);
                     }).bind("mouseout.booklet", function () {
                             endHoverAnimation(false);
                         });
                 }
 
                 // add arrow animations
-                if(options.arrows) {
+                if(options.arrows) { //js/jquery.booklet.latest.js:800//
                     if(options.arrowsHide) {
                         if($.support.opacity) {
-                            ctrlsN.bind('hover.booklet', function () { //js/jquery.booklet.latest.js:800//
+                            ctrlsN.bind('hover.booklet', function () {
                                 arrowN.find('div').stop().fadeTo('fast', 1);
                             }, function () {
                                 arrowN.find('div').stop().fadeTo('fast', 0);
                             });
                             ctrlsP.bind('hover.booklet', function () {
                                 arrowP.find('div').stop().fadeTo('fast', 1);
-                            }, function () {
+                            }, function () { //js/jquery.booklet.latest.js:810//
                                 arrowP.find('div').stop().fadeTo('fast', 0);
                             });
-                        } else { //js/jquery.booklet.latest.js:810//
+                        } else {
                             ctrlsN.bind('hover.booklet', function () {
                                 arrowN.find('div').show();
                             }, function () {
                                 arrowN.find('div').hide();
                             });
                             ctrlsP.bind('hover.booklet', function () {
-                                arrowP.find('div').show();
+                                arrowP.find('div').show(); //js/jquery.booklet.latest.js:820//
                             }, function () {
                                 arrowP.find('div').hide();
-                            }); //js/jquery.booklet.latest.js:820//
+                            });
                         }
                     } else {
                         arrowN.find('div').show();
                         arrowP.find('div').show();
                     }
                 }
-
+ //js/jquery.booklet.latest.js:830//
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-                // keyboard controls //js/jquery.booklet.latest.js:830//
+                // keyboard controls
                 $(document).bind('keyup.booklet', function (event) {
                     if(event.keyCode == 37 && options.keyboard && !isDisabled) {
                         prev();
                     } else if(event.keyCode == 39 && options.keyboard && !isDisabled) {
                         next();
                     }
-                });
+                }); //js/jquery.booklet.latest.js:840//
 
                 // hash controls
-                clearInterval(h); //js/jquery.booklet.latest.js:840//
+                clearInterval(h);
                 h = null;
                 if(options.hash) {
                     initHash();
                     clearInterval(h);
                     h = setInterval(function () {
                         pollHash()
-                    }, 250);
+                    }, 250); //js/jquery.booklet.latest.js:850//
                 }
 
-                // percentage resizing //js/jquery.booklet.latest.js:850//
+                // percentage resizing
                 $(window).bind('resize.booklet', function () {
                     if((wPercent || hPercent) && !isDisabled) {
                         updatePercentageSize();
                     }
                 });
 
-                // auto flip book controls
+                // auto flip book controls //js/jquery.booklet.latest.js:860//
                 if(options.auto && options.delay) {
                     clearInterval(a);
-                    a = setInterval(function () { //js/jquery.booklet.latest.js:860//
+                    a = setInterval(function () {
                         if(options.direction == directions.leftToRight) {
                             next();
                         } else {
                             prev();
                         }
                     }, options.delay);
-                    isPlaying = true;
+                    isPlaying = true; //js/jquery.booklet.latest.js:870//
 
                     if(options.pause && $(options.pause).length > 0) {
-                        pause = $(options.pause); //js/jquery.booklet.latest.js:870//
+                        pause = $(options.pause);
                         pause.unbind('click.booklet')
                             .bind('click.booklet', function (e) {
                                 e.preventDefault();
                                 if(isPlaying) {
                                     clearInterval(a);
                                     isPlaying = false;
-                                }
+                                } //js/jquery.booklet.latest.js:880//
                             });
                     }
- //js/jquery.booklet.latest.js:880//
+
                     if(options.play && $(options.play).length > 0) {
                         play = $(options.play);
                         play.unbind('click.booklet')
                             .bind('click.booklet', function (e) {
                                 e.preventDefault();
                                 if(!isPlaying) {
-                                    clearInterval(a);
+                                    clearInterval(a); //js/jquery.booklet.latest.js:890//
                                     a = setInterval(function () {
                                         if(options.direction == directions.leftToRight) {
-                                            next(); //js/jquery.booklet.latest.js:890//
+                                            next();
                                         } else {
                                             prev();
                                         }
                                     }, options.delay);
                                     isPlaying = true;
                                 }
-                            });
+                            }); //js/jquery.booklet.latest.js:900//
                     }
                 } else {
-                    clearInterval(a); //js/jquery.booklet.latest.js:900//
+                    clearInterval(a);
                     a = null;
                     if(options.pause && $(options.pause).length > 0) {
                         $(options.pause).unbind('click.booklet');
                     }
                     pause = null;
                     if(options.play && $(options.play).length > 0) {
-                        $(options.play).unbind('click.booklet');
+                        $(options.play).unbind('click.booklet'); //js/jquery.booklet.latest.js:910//
                     }
                     play = null;
-                    isPlaying = false; //js/jquery.booklet.latest.js:910//
+                    isPlaying = false;
                 }
 
                 if(didUpdate){
                     updatePages();
                     updateControlVisibility();
                     updateMenu();
-                }
+                } //js/jquery.booklet.latest.js:920//
             },
             updateCSSandAnimations = function () {
-                // init base css //js/jquery.booklet.latest.js:920//
+                // init base css
                 css = {
                     wrap: {
                         left: 0,
                         width: pWidth - (options.pagePadding * 2) - (options.pageBorder * 2),
                         height: pHeight - (options.pagePadding * 2) - (options.pageBorder * 2),
                         padding: options.pagePadding
-                    },
+                    }, //js/jquery.booklet.latest.js:930//
                     p0wrap: {
                         right: 0,
-                        left: 'auto' //js/jquery.booklet.latest.js:930//
+                        left: 'auto'
                     },
                     p1: {
                         left: 0,
                         width: pWidth,
                         height: pHeight
                     },
-                    p2: {
+                    p2: { //js/jquery.booklet.latest.js:940//
                         left: pWidth,
                         width: pWidth,
-                        opacity: 1, //js/jquery.booklet.latest.js:940//
+                        opacity: 1,
                         height: pHeight
                     },
                     pN: {
                         left: 0,
                         width: pWidth,
                         height: pHeight
-                    },
+                    }, //js/jquery.booklet.latest.js:950//
                     p0: {
                         left: 0,
-                        width: 0, //js/jquery.booklet.latest.js:950//
+                        width: 0,
                         height: pHeight
                     },
                     p3: {
                         left: pWidth * 2,
                         width: 0,
                         height: pHeight,
-                        paddingLeft: 0
+                        paddingLeft: 0 //js/jquery.booklet.latest.js:960//
                     },
                     p4: {
-                        left: pWidth, //js/jquery.booklet.latest.js:960//
+                        left: pWidth,
                         width: pWidth,
                         height: pHeight
                     },
                     sF: {
                         right: 0,
                         width: pWidth,
-                        height: pHeight
+                        height: pHeight //js/jquery.booklet.latest.js:970//
                     },
                     sB: {
-                        left: 0, //js/jquery.booklet.latest.js:970//
+                        left: 0,
                         width: pWidth,
                         height: pHeight
                     }
                 };
 
                 hoverShadowWidth = 10;
-                hoverFullWidth = options.hoverWidth + hoverShadowWidth;
+                hoverFullWidth = options.hoverWidth + hoverShadowWidth; //js/jquery.booklet.latest.js:980//
                 hoverCurlWidth = (options.hoverWidth / 2) + hoverShadowWidth;
 
-                // init animation params //js/jquery.booklet.latest.js:980//
+                // init animation params
                 anim = {
 
                     hover: {
                         speed:    options.hoverSpeed,
                         size:     options.hoverWidth,
 
-                        p2:          {width: pWidth - hoverCurlWidth},
+                        p2:          {width: pWidth - hoverCurlWidth}, //js/jquery.booklet.latest.js:990//
                         p3:          {left: options.width - hoverFullWidth, width: hoverCurlWidth},
                         p3closed:    {left: pWidth - options.hoverWidth, width: hoverCurlWidth},
-                        p3wrap:      {left: hoverShadowWidth}, //js/jquery.booklet.latest.js:990//
+                        p3wrap:      {left: hoverShadowWidth},
 
                         p2end:       {width: pWidth},
                         p2closedEnd: {width: pWidth, left:0},
                         p3end:       {left: options.width, width: 0},
                         p3closedEnd: {left: pWidth, width: 0},
                         p3wrapEnd:   {left: 10},
-
+ //js/jquery.booklet.latest.js:1000//
                         p1:          {left: hoverCurlWidth, width: pWidth - hoverCurlWidth},
                         p1wrap:      {left: '-'+hoverCurlWidth+'px'},
-                        p0:          {left: hoverCurlWidth, width: hoverCurlWidth}, //js/jquery.booklet.latest.js:1000//
+                        p0:          {left: hoverCurlWidth, width: hoverCurlWidth},
                         p0wrap:      {right: hoverShadowWidth},
 
                         p1end:       {left: 0, width: pWidth},
                         p1wrapEnd:   {left: 0},
                         p0end:       {left: 0, width: 0},
                         p0wrapEnd:   {right: 0}
-                    },
+                    }, //js/jquery.booklet.latest.js:1010//
 
                     // forward
-                    p2: { //js/jquery.booklet.latest.js:1010//
+                    p2: {
                         width: 0
                     },
                     p2closed: {
                         width: 0,
                         left: pWidth
                     },
-                    p4closed: {
+                    p4closed: { //js/jquery.booklet.latest.js:1020//
                         left: pWidth
                     },
-                    p3in: { //js/jquery.booklet.latest.js:1020//
+                    p3in: {
                         left: pWidthH,
                         width: pWidthH,
                         paddingLeft: options.shadowBtmWidth
                     },
                     p3inDrag: {
                         left: pWidth / 4,
-                        width: pWidth * .75,
+                        width: pWidth * .75, //js/jquery.booklet.latest.js:1030//
                         paddingLeft: options.shadowBtmWidth
                     },
-                    p3out: { //js/jquery.booklet.latest.js:1030//
+                    p3out: {
                         left: 0,
                         width: pWidth,
                         paddingLeft: 0
                     },
                     p3wrapIn:  {
                         left: options.shadowBtmWidth
-                    },
+                    }, //js/jquery.booklet.latest.js:1040//
                     p3wrapOut: {
                         left: 0
-                    }, //js/jquery.booklet.latest.js:1040//
+                    },
 
                     // backwards
                     p1: {
                         left: pWidth,
                         width: 0
                     },
-                    p1wrap: {
+                    p1wrap: { //js/jquery.booklet.latest.js:1050//
                         left: pWidthN
                     },
-                    p0: { //js/jquery.booklet.latest.js:1050//
+                    p0: {
                         left: pWidth,
                         width: pWidth
                     },
                     p0in: {
                         left: pWidthH,
                         width: pWidthH
-                    },
+                    }, //js/jquery.booklet.latest.js:1060//
                     p0out: {
                         left: pWidth,
-                        width: pWidth //js/jquery.booklet.latest.js:1060//
+                        width: pWidth
                     },
                     p0outClosed: {
                         left: 0,
                         width: pWidth
                     },
                     p2back: {
-                        left: 0
+                        left: 0 //js/jquery.booklet.latest.js:1070//
                     },
                     p0wrapDrag: {
-                        right: 0 //js/jquery.booklet.latest.js:1070//
+                        right: 0
                     },
                     p0wrapIn: {
                         right: options.shadowBtmWidth
                     },
                     p0wrapOut: {
                         right: 0
-                    }
+                    } //js/jquery.booklet.latest.js:1080//
                 };
             },
-            updatePercentageSize = function () { //js/jquery.booklet.latest.js:1080//
+            updatePercentageSize = function () {
                 // recalculate size for percentage values, called with window is resized
                 if(wPercent) {
                     options.width = (wOrig.replace('%', '') / 100) * parseFloat(target.parent().css('width'));
                     target.width(options.width);
                     pWidth = options.width / 2;
                     pWidthN = '-' + (pWidth) + 'px';
-                    pWidthH = pWidth / 2;
+                    pWidthH = pWidth / 2; //js/jquery.booklet.latest.js:1090//
                 }
                 if(hPercent) {
-                    options.height = (hOrig.replace('%', '') / 100) * parseFloat(target.parent().css('height')); //js/jquery.booklet.latest.js:1090//
+                    options.height = (hOrig.replace('%', '') / 100) * parseFloat(target.parent().css('height'));
                     target.height(options.height);
                     pHeight = options.height;
                 }
                 updateCSSandAnimations();
                 updatePageCSS();
             },
-            updateControlVisibility = function () {
+            updateControlVisibility = function () { //js/jquery.booklet.latest.js:1100//
                 // update controls, cursors and visibility
                 if(options.overlays || options.tabs || options.arrows) {
-                    if($.support.opacity) { //js/jquery.booklet.latest.js:1100//
+                    if($.support.opacity) {
                         if(options.currentIndex >= 2 && options.currentIndex != 0) {
                             ctrlsP.fadeIn('fast').css('cursor', options.cursor);
                         } else {
                             ctrlsP.fadeOut('fast').css('cursor', 'default');
                         }
                         if(options.currentIndex < options.pageTotal - 2) {
-                            ctrlsN.fadeIn('fast').css('cursor', options.cursor);
+                            ctrlsN.fadeIn('fast').css('cursor', options.cursor); //js/jquery.booklet.latest.js:1110//
                         } else {
                             ctrlsN.fadeOut('fast').css('cursor', 'default');
-                        } //js/jquery.booklet.latest.js:1110//
+                        }
                     } else {
                         if(options.currentIndex >= 2 && options.currentIndex != 0) {
                             ctrlsP.show().css('cursor', options.cursor);
                         } else {
                             ctrlsP.hide().css('cursor', 'default');
                         }
-                        if(options.currentIndex < options.pageTotal - 2) {
+                        if(options.currentIndex < options.pageTotal - 2) { //js/jquery.booklet.latest.js:1120//
                             ctrlsN.show().css('cursor', options.cursor);
                         } else {
-                            ctrlsN.hide().css('cursor', 'default'); //js/jquery.booklet.latest.js:1120//
+                            ctrlsN.hide().css('cursor', 'default');
                         }
                     }
                 }
             },
             updateMenu = function () {
                 if(options.pageSelector) {
-                    var currentPageNumbers = '';
+                    var currentPageNumbers = ''; //js/jquery.booklet.latest.js:1130//
                     if(options.direction == directions.rightToLeft) {
                         currentPageNumbers = (Math.abs(options.currentIndex - options.pageTotal) - 1) + ' - ' + ((Math.abs(options.currentIndex - options.pageTotal)));
-                        if(options.closed) { //js/jquery.booklet.latest.js:1130//
+                        if(options.closed) {
                             if(options.currentIndex == options.pageTotal - 2) {
                                 currentPageNumbers = '1'
                             } else if(options.currentIndex == 0) {
                                 currentPageNumbers = options.pageTotal - 2
                             } else {
                                 currentPageNumbers = (Math.abs(options.currentIndex - options.pageTotal) - 2) + ' - ' + ((Math.abs(options.currentIndex - options.pageTotal) - 1));
-                            }
+                            } //js/jquery.booklet.latest.js:1140//
 
                             if(options.covers) {
-                                if(options.currentIndex == options.pageTotal - 2) { //js/jquery.booklet.latest.js:1140//
+                                if(options.currentIndex == options.pageTotal - 2) {
                                     currentPageNumbers = ''
                                 } else if(options.currentIndex == 0) {
                                     currentPageNumbers = ''
                                 } else {
                                     currentPageNumbers = (Math.abs(options.currentIndex - options.pageTotal) - 3) + ' - ' + ((Math.abs(options.currentIndex - options.pageTotal) - 2));
                                 }
-                            }
+                            } //js/jquery.booklet.latest.js:1150//
                         }
                     } else {
-                        currentPageNumbers = (options.currentIndex + 1) + ' - ' + (options.currentIndex + 2); //js/jquery.booklet.latest.js:1150//
+                        currentPageNumbers = (options.currentIndex + 1) + ' - ' + (options.currentIndex + 2);
                         if(options.closed) {
                             if(options.currentIndex == 0) {
                                 currentPageNumbers = '1'
                             } else if(options.currentIndex == options.pageTotal - 2) {
                                 currentPageNumbers = options.pageTotal - 2
                             } else {
-                                currentPageNumbers = (options.currentIndex) + '-' + (options.currentIndex + 1);
+                                currentPageNumbers = (options.currentIndex) + '-' + (options.currentIndex + 1); //js/jquery.booklet.latest.js:1160//
                             }
 
-                            if(options.covers) { //js/jquery.booklet.latest.js:1160//
+                            if(options.covers) {
                                 if(options.currentIndex == 0) {
-                                    currentPageNumbers = ''
+                                    currentPageNumbers = options.closedFrontTitle;
                                 } else if(options.currentIndex == options.pageTotal - 2) {
-                                    currentPageNumbers = ''
+                                    currentPageNumbers = options.closedBackTitle;
                                 } else {
                                     currentPageNumbers = (options.currentIndex - 1) + '-' + (options.currentIndex);
-                                }
+                                } //js/jquery.booklet.latest.js:1170//
                             }
                         }
-                    } //js/jquery.booklet.latest.js:1170//
+                    }
                     $(options.menu + ' .b-selector-page .b-current').text(currentPageNumbers);
                 }
                 if(options.chapterSelector) {
                     if(pages[options.currentIndex].chapter != "") {
                         $(options.menu + ' .b-selector-chapter .b-current').text(pages[options.currentIndex].chapter);
                     } else if(pages[options.currentIndex + 1].chapter != "") {
-                        $(options.menu + ' .b-selector-chapter .b-current').text(pages[options.currentIndex + 1].chapter);
+                        $(options.menu + ' .b-selector-chapter .b-current').text(pages[options.currentIndex + 1].chapter); //js/jquery.booklet.latest.js:1180//
                     }
 
-                    if(options.direction == directions.rightToLeft && pages[options.currentIndex + 1].chapter != "") { //js/jquery.booklet.latest.js:1180//
+                    if(options.direction == directions.rightToLeft && pages[options.currentIndex + 1].chapter != "") {
                         $(options.menu + ' .b-selector-chapter .b-current').text(pages[options.currentIndex + 1].chapter);
                     } else if(pages[options.currentIndex] != "") {
                         $(options.menu + ' .b-selector-chapter .b-current').text(pages[options.currentIndex].chapter);
                     }
                 }
             },
-            updateManualControls = function () {
+            updateManualControls = function () { //js/jquery.booklet.latest.js:1190//
                 var origX, newX, diff, fullPercent, shadowPercent, shadowW, curlW, underW, targetPercent, curlLeft, p1wrapLeft;
 
-                // reset vars //js/jquery.booklet.latest.js:1190//
+                // reset vars
                 isHoveringRight = isHoveringLeft = p3drag = p0drag = false;
 
                 // manual page turning, check if jQuery UI is loaded
                 target.find('.b-page').draggable('destroy').removeClass('b-grab b-grabbing');
                 if(options.manual && $.ui) {
 
-                    // implement draggable forward
+                    // implement draggable forward //js/jquery.booklet.latest.js:1200//
                     p3.draggable({
                         axis: "x",
-                        containment: [ //js/jquery.booklet.latest.js:1200//
+                        containment: [
                             target.offset().left,
                             0,
                             p2.offset().left + pWidth - hoverFullWidth,
                             pHeight
                         ],
                         drag: function (event, ui) {
-                            p3drag = true;
+                            p3drag = true; //js/jquery.booklet.latest.js:1210//
                             p3.removeClass('b-grab').addClass('b-grabbing');
 
-                            // calculate positions //js/jquery.booklet.latest.js:1210//
+                            // calculate positions
                             origX = ui.originalPosition.left;
                             newX = ui.position.left;
                             diff = origX - newX;
                             fullPercent = diff / origX;
                             shadowPercent = fullPercent < 0.5 ? fullPercent : (1 - fullPercent);
                             shadowW = (shadowPercent * options.shadowBtmWidth * 2) + hoverShadowWidth;
-                            shadowW = diff / origX >= 0.5 ? shadowW -= hoverShadowWidth :shadowW;
+                            shadowW = diff / origX >= 0.5 ? shadowW -= hoverShadowWidth :shadowW; //js/jquery.booklet.latest.js:1220//
 
                             // move shadows
-                            if(options.shadows) { //js/jquery.booklet.latest.js:1220//
+                            if(options.shadows) {
                                 sF.css({'right': '-' + (options.shadowTopFwdWidth*shadowPercent*2) + 'px'});
                                 if($.support.opacity) {
                                     sF.css({'opacity': shadowPercent*2});
                                 } else {
                                     sF.css({'right': 'auto', 'left': 0.1 * p3.width()});
                                 }
-                            }
+                            } //js/jquery.booklet.latest.js:1230//
 
                             // set top page curl width
-                            curlW = hoverCurlWidth + diff / 2; //js/jquery.booklet.latest.js:1230//
+                            curlW = hoverCurlWidth + diff / 2;
                             curlW = curlW > pWidth ? pWidth : curlW; // constrain max width
 
                             // set bottom page width, hide
                             underW = pWidth - curlW;
 
                             // calculate positions for closed and auto-centered book
-                            if(options.closed && options.autoCenter) {
+                            if(options.closed && options.autoCenter) { //js/jquery.booklet.latest.js:1240//
                                 if(options.currentIndex == 0) {
                                     targetPercent = 0.5 + 0.5*fullPercent;
-                                    curlW = hoverCurlWidth + (hoverCurlWidth * fullPercent) + diff; //js/jquery.booklet.latest.js:1240//
+                                    curlW = hoverCurlWidth + (hoverCurlWidth * fullPercent) + diff;
                                     curlW = curlW > pWidth ? pWidth : curlW;
                                     underW = pWidth - curlW;
 
                                     p2.css({left: pWidth*fullPercent});
                                     p4.css({left: pWidth*fullPercent});
                                     target.width(options.width*targetPercent);
-                                } else if(options.currentIndex == options.pageTotal - 4) {
+                                } else if(options.currentIndex == options.pageTotal - 4) { //js/jquery.booklet.latest.js:1250//
                                     targetPercent = (1 - fullPercent) + 0.5*fullPercent;
                                     underW = pWidth - curlW;
- //js/jquery.booklet.latest.js:1250//
+
                                     p4.hide();
                                     target.width(options.width*targetPercent);
                                 } else {
                                     target.width(options.width);
                                 }
                             }
-
+ //js/jquery.booklet.latest.js:1260//
                             // set values
                             p3.width(curlW);
-                            p3wrap.css({left: shadowW}); //js/jquery.booklet.latest.js:1260//
+                            p3wrap.css({left: shadowW});
                             p2.width(underW);
                         },
                         stop: function (event, ui) {
                             endHoverAnimation(false);
                             if(fullPercent > options.hoverThreshold) {
                                 if(options.shadows && !$.support.opacity) {
-                                    sF.css({'left': 'auto', opacity: 0});
+                                    sF.css({'left': 'auto', opacity: 0}); //js/jquery.booklet.latest.js:1270//
                                 }
                                 next();
-                                p3.removeClass('b-grab b-grabbing'); //js/jquery.booklet.latest.js:1270//
+                                p3.removeClass('b-grab b-grabbing');
                             } else {
                                 p3drag = false;
                                 p3.removeClass('b-grabbing').addClass('b-grab');
 
                                 sF.animate({left: 'auto', opacity: 0}, anim.hover.speed, options.easing).css(css.sF);
 
-                                if(options.closed && options.autoCenter) {
+                                if(options.closed && options.autoCenter) { //js/jquery.booklet.latest.js:1280//
                                     if(options.currentIndex == 0) {
                                         p2.animate({left: 0}, anim.hover.speed, options.easing);
-                                        p4.animate({left: 0}, anim.hover.speed, options.easing); //js/jquery.booklet.latest.js:1280//
+                                        p4.animate({left: 0}, anim.hover.speed, options.easing);
                                         target.animate({width: options.width*0.5}, anim.hover.speed, options.easing);
                                     } else {
                                         target.animate({width: options.width}, anim.hover.speed, options.easing);
                                     }
                                 }
                             }
-                        }
+                        } //js/jquery.booklet.latest.js:1290//
                     });
 
-                    // implement draggable backwards //js/jquery.booklet.latest.js:1290//
+                    // implement draggable backwards
                     p0.draggable({
                         axis: "x",
                         //containment: 'parent',
                         containment: [
                             target.offset().left + hoverCurlWidth,
                             0,
-                            target.offset().left + options.width,
+                            target.offset().left + options.width, //js/jquery.booklet.latest.js:1300//
                             pHeight
                         ],
-                        drag: function (event, ui) { //js/jquery.booklet.latest.js:1300//
+                        drag: function (event, ui) {
                             p0drag = true;
                             p0.removeClass('b-grab').addClass('b-grabbing');
 
                             // calculate positions
                             origX = ui.originalPosition.left;
                             newX = ui.position.left;
-                            diff = newX - origX;
+                            diff = newX - origX; //js/jquery.booklet.latest.js:1310//
                             fullPercent = diff / (options.width - origX);
                             if(options.closed && options.autoCenter && options.currentIndex == 2) {
-                                fullPercent = diff / (pWidth - origX); //js/jquery.booklet.latest.js:1310//
+                                fullPercent = diff / (pWidth - origX);
                             }
                             if(fullPercent > 1){fullPercent = 1;}
 
                             shadowPercent = fullPercent < 0.5 ? fullPercent : (1 - fullPercent);
                             shadowW = (shadowPercent * options.shadowBtmWidth * 2) + hoverShadowWidth;
                             shadowW = diff / origX >= 0.5 ? shadowW -= hoverShadowWidth :shadowW;
-
+ //js/jquery.booklet.latest.js:1320//
                             if(options.shadows) {
                                 if($.support.opacity) {
-                                    sB.css({'opacity': shadowPercent*2}); //js/jquery.booklet.latest.js:1320//
+                                    sB.css({'opacity': shadowPercent*2});
                                 } else {
                                     sB.css({'left': options.shadowTopBackWidth*shadowPercent*2});
                                 }
                             }
 
                             curlW = fullPercent*(pWidth-hoverCurlWidth) + hoverCurlWidth + shadowW;
-                            curlLeft = curlW - shadowW;
+                            curlLeft = curlW - shadowW; //js/jquery.booklet.latest.js:1330//
                             p1wrapLeft = -curlLeft;
 
-                            // calculate positions for closed and auto-centered book //js/jquery.booklet.latest.js:1330//
+                            // calculate positions for closed and auto-centered book
                             if(options.closed && options.autoCenter) {
                                 if(options.currentIndex == 2) {
                                     targetPercent = (1-fullPercent) + 0.5*fullPercent;
                                     curlLeft = (1-fullPercent)*curlLeft;
                                     p1wrapLeft = -curlLeft - (options.width - (options.width*targetPercent));
                                     pN.hide();
-                                    p2.css({left: pWidth*(1-fullPercent)});
+                                    p2.css({left: pWidth*(1-fullPercent)}); //js/jquery.booklet.latest.js:1340//
                                     p4.css({left: pWidth*(1-fullPercent)});
                                     target.width(options.width*targetPercent);
-                                } else if(options.currentIndex == options.pageTotal - 2) { //js/jquery.booklet.latest.js:1340//
+                                } else if(options.currentIndex == options.pageTotal - 2) {
                                     targetPercent = 0.5 + 0.5*fullPercent;
                                     target.width(options.width*targetPercent);
                                 } else {
                                     target.width(options.width);
                                 }
                             }
-
+ //js/jquery.booklet.latest.js:1350//
                             // set values
                             ui.position.left = curlLeft;
-                            p0.css({width: curlW}); //js/jquery.booklet.latest.js:1350//
+                            p0.css({width: curlW});
                             p0wrap.css({right: shadowW});
                             p1.css({left: curlLeft, width: pWidth - curlLeft});
                             p1wrap.css({left: p1wrapLeft});
                         },
                         stop: function (event, ui) {
                             endHoverAnimation(true);
-                            if(fullPercent > options.hoverThreshold) {
+                            if(fullPercent > options.hoverThreshold) { //js/jquery.booklet.latest.js:1360//
                                 prev();
                                 p0.removeClass('b-grab b-grabbing');
-                            } else { //js/jquery.booklet.latest.js:1360//
+                            } else {
                                 sB.animate({opacity: 0}, anim.hover.speed, options.easing).css(css.sB);
                                 p0drag = false;
                                 p0.removeClass('b-grabbing').addClass('b-grab');
 
                                 if(options.closed && options.autoCenter) {
                                     if(options.currentIndex == 2) {
-                                        p2.animate({left: pWidth}, anim.hover.speed*2, options.easing);
+                                        p2.animate({left: pWidth}, anim.hover.speed*2, options.easing); //js/jquery.booklet.latest.js:1370//
                                         p4.animate({left: pWidth}, anim.hover.speed*2, options.easing);
                                         target.animate({width: options.width}, anim.hover.speed*2, options.easing);
-                                    } else if(options.currentIndex == options.pageTotal - 2) { //js/jquery.booklet.latest.js:1370//
+                                    } else if(options.currentIndex == options.pageTotal - 2) {
                                         target.animate({width: options.width*0.5}, anim.hover.speed, options.easing);
                                     }
                                 }
                             }
                         }
                     });
-
+ //js/jquery.booklet.latest.js:1380//
                     target.find('.b-page').unbind('click.booklet');
                     if (options.hoverClick) {
-                        target.find('.b-pN, .b-p0').bind('click.booklet', prev).css({cursor:'pointer'}); //js/jquery.booklet.latest.js:1380//
+                        target.find('.b-pN, .b-p0').bind('click.booklet', prev).css({cursor:'pointer'});
                         target.find('.b-p3, .b-p4').bind('click.booklet', next).css({cursor:'pointer'});
                     }
 
                     // mouse tracking for page movement
                     target.unbind('mousemove.booklet').bind('mousemove.booklet', function (e) {
                         diff = e.pageX - target.offset().left;
-                        if(diff < anim.hover.size) {
+                        if(diff < anim.hover.size) { //js/jquery.booklet.latest.js:1390//
                             startHoverAnimation(false);
                         } else if(diff > pWidth - anim.hover.size && options.currentIndex == 0 && options.autoCenter && options.closed) {
-                            startHoverAnimation(true); //js/jquery.booklet.latest.js:1390//
+                            startHoverAnimation(true);
                         } else if(diff > anim.hover.size && diff <= options.width - anim.hover.size) {
                             endHoverAnimation(false);
                             endHoverAnimation(true);
                         } else if(diff > options.width - anim.hover.size) {
                             startHoverAnimation(true);
                         }
-                    }).unbind('mouseleave.booklet').bind('mouseleave.booklet', function () {
+                    }).unbind('mouseleave.booklet').bind('mouseleave.booklet', function () { //js/jquery.booklet.latest.js:1400//
                             endHoverAnimation(false);
                             endHoverAnimation(true);
-                        }); //js/jquery.booklet.latest.js:1400//
+                        });
 
                 }
             },
             initHash = function () {
                 hash = getHashNum();
 
-                if(!isNaN(hash) && hash <= options.pageTotal - 1 && hash >= 0 && hash != '') {
+                if(!isNaN(hash) && hash <= options.pageTotal - 1 && hash >= 0 && hash != '') { //js/jquery.booklet.latest.js:1410//
                     if((hash % 2) != 0) {
                         hash--;
-                    } //js/jquery.booklet.latest.js:1410//
+                    }
                     options.currentIndex = hash;
                 } else {
                     updateHash(options.currentIndex + 1, options);
                 }
 
                 currentHash = hash;
-            },
+            }, //js/jquery.booklet.latest.js:1420//
             pollHash = function () {
                 hash = getHashNum();
- //js/jquery.booklet.latest.js:1420//
+
                 // check page num
                 if(!isNaN(hash) && hash <= options.pageTotal - 1 && hash >= 0) {
                     if(hash != options.currentIndex && hash.toString() != currentHash) {
                         if((hash % 2) != 0) {
 
                             hash--
-                        }
+                        } //js/jquery.booklet.latest.js:1430//
 
                         document.title = options.name + options.hashTitleText + (hash + 1);
- //js/jquery.booklet.latest.js:1430//
+
                         if(!isBusy) {
                             goToPage(hash);
                             currentHash = hash;
                         }
                     }
                 }
-            },
+            }, //js/jquery.booklet.latest.js:1440//
             getHashNum = function () {
                 var hash, hashNum;
-                // get page number from hash tag, last element //js/jquery.booklet.latest.js:1440//
+                // get page number from hash tag, last element
                 hash = window.location.hash.split('/');
                 if(hash.length > 1) {
                     hashNum = parseInt(hash[2]) - 1;
                     if(options.direction == directions.rightToLeft) {
                         hashNum = Math.abs(hashNum + 1 - options.pageTotal);
                     }
-                    return hashNum;
+                    return hashNum; //js/jquery.booklet.latest.js:1450//
                 } else {
                     return '';
-                } //js/jquery.booklet.latest.js:1450//
+                }
             },
             updateHash = function (hash, options) {
                 // set the hash
                 if(options.hash) {
                     if(options.direction == directions.rightToLeft) {
                         hash = Math.abs(hash - options.pageTotal);
-                    }
+                    } //js/jquery.booklet.latest.js:1460//
                     window.location.hash = hashRoot + hash;
                 }
-            }, //js/jquery.booklet.latest.js:1460//
+            },
             destroyControls = function () {
 
                 if(options.menu){
                     $(options.menu).removeClass('b-menu');
                 }
                 menu = null;
-
+ //js/jquery.booklet.latest.js:1470//
                 if (customN) {
                     customN.unbind('click.booklet');
-                    customN = null; //js/jquery.booklet.latest.js:1470//
+                    customN = null;
                 }
 
                 if (customP) {
                     customP.unbind('click.booklet');
                     customP = null;
                 }
-
+ //js/jquery.booklet.latest.js:1480//
                 if (ctrlsN) {
                     ctrlsN.unbind(".booklet");
-                    ctrlsN = null; //js/jquery.booklet.latest.js:1480//
+                    ctrlsN = null;
                 }
                 if (ctrlsP) {
                     ctrlsP.unbind(".booklet");
                     ctrlsP = null;
                 }
 
-                target.find('.b-selector, .b-controls').remove();
+                target.find('.b-selector, .b-controls').remove(); //js/jquery.booklet.latest.js:1490//
 
                 // keyboard
-                //$(document).unbind('keyup.booklet'); //js/jquery.booklet.latest.js:1490//
+                //$(document).unbind('keyup.booklet');
                 isDisabled = true;
 
                 // hash
                 clearInterval(h);
                 h = null;
 
-                // window resize
+                // window resize //js/jquery.booklet.latest.js:1500//
                 //$(window).unbind('resize.booklet');
 
-                // auto play //js/jquery.booklet.latest.js:1500//
+                // auto play
                 clearInterval(a);
                 a = null;
                 if(options.pause && $(options.pause).length > 0) {
                     $(options.pause).unbind('click.booklet');
                 }
                 pause = null;
-                if(options.play && $(options.play).length > 0) {
+                if(options.play && $(options.play).length > 0) { //js/jquery.booklet.latest.js:1510//
                     $(options.play).unbind('click.booklet');
                 }
-                play = null; //js/jquery.booklet.latest.js:1510//
+                play = null;
 
                 destroyManualControls();
             },
             destroyManualControls = function () {
                 // remove old draggables
                 target.find('.b-page').draggable('destroy').removeClass('b-grab b-grabbing');
-                // remove mouse tracking for page movement
+                // remove mouse tracking for page movement //js/jquery.booklet.latest.js:1520//
                 target.unbind('.booklet');
             },
- //js/jquery.booklet.latest.js:1520//
+
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // DYNAMIC FUNCTIONS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
             addPage = function (index, html) {
                 // validate inputs
-                if(index == "start") {
+                if(index == "start") { //js/jquery.booklet.latest.js:1530//
                     index = 0;
                 } else if(index == "end") {
-                    index = originalPageTotal; //js/jquery.booklet.latest.js:1530//
+                    index = originalPageTotal;
+                } else if(typeof index == "number") {
+                    if(index < 0 || index > originalPageTotal) {
+                        return;
+                    }
+                } else if(typeof index == "undefined") {
+                    return;
+                } //js/jquery.booklet.latest.js:1540//
+
+                if(typeof html == "undefined" || html == '') {
+                    return;
+                }
+
+                // remove page structure, revert to original order
+                destroyPages();
+                destroyControls();
+
+                // add new page //js/jquery.booklet.latest.js:1550//
+                if(options.closed && options.covers && index == originalPageTotal) {
+                    //end of closed-covers book
+                    target.children(':eq(' + (index - 1) + ')').before(html);
+                } else if(options.closed && options.covers && index == 0) {
+                    //start of closed-covers book
+                    target.children(':eq(' + index + ')').after(html);
+                } else if(index == originalPageTotal) {
+                    //end of book
+                    target.children(':eq(' + (index - 1) + ')').after(html);
+                } else { //js/jquery.booklet.latest.js:1560//
+                    target.children(':eq(' + index + ')').before(html);
+                }
+
+                originalPageTotal = target.children().length;
+
+                // callback for adding page, returns options, index and the page node
+                callback = {
+                    options: jQuery.extend({},options),
+                    index: index,
+                    page: target.children(':eq(' + index + ')')[0] //js/jquery.booklet.latest.js:1570//
+                };
+                if(options.add) {
+                    target.unbind(events.add+'.booklet').bind(events.add+'.booklet', options.add);
+                }
+                target.trigger(events.add, callback);
+
+                isDisabled = false;
+
+                // recall initialize functions
+                initPages(); //js/jquery.booklet.latest.js:1580//
+                updateOptions();
+                updatePages();
+                updateControlVisibility();
+                updateMenu();
+            },
+            removePage = function(index) {
+                // validate inputs
+                if(index == "start") {
+                    index = 0;
+                } else if(index == "end") { //js/jquery.booklet.latest.js:1590//
+                    index = originalPageTotal;
                 } else if(typeof index == "number") {
                     if(index < 0 || index > originalPageTotal) {
                         return;
@@ -1734,578 +1795,520 @@ jQuery.effects||function(a,b){function c(b){var c;return b&&b.constructor==Array
                     return;
                 }
 
-                if(typeof html == "undefined" || html == '') {
-                    return; //js/jquery.booklet.latest.js:1540//
-                }
-
-                // remove page structure, revert to original order
-                destroyPages();
-                destroyControls();
-
-                // add new page
-                if(options.closed && options.covers && index == originalPageTotal) {
-                    //end of closed-covers book
-                    target.children(':eq(' + (index - 1) + ')').before(html); //js/jquery.booklet.latest.js:1550//
-                } else if(options.closed && options.covers && index == 0) {
-                    //start of closed-covers book
-                    target.children(':eq(' + index + ')').after(html);
-                } else if(index == originalPageTotal) {
-                    //end of book
-                    target.children(':eq(' + (index - 1) + ')').after(html);
-                } else {
-                    target.children(':eq(' + index + ')').before(html);
-                }
- //js/jquery.booklet.latest.js:1560//
-                originalPageTotal = target.children().length;
-
-                // callback for adding page, returns options, index and the page node
-                callback = {
-                    options: jQuery.extend({},options),
-                    index: index,
-                    page: target.children(':eq(' + index + ')')[0]
-                };
-                if(options.add) {
-                    target.unbind(events.add+'.booklet').bind(events.add+'.booklet', options.add); //js/jquery.booklet.latest.js:1570//
-                }
-                target.trigger(events.add, callback);
-
-                isDisabled = false;
-
-                // recall initialize functions
-                initPages();
-                updateOptions();
-                updatePages();
-                updateControlVisibility(); //js/jquery.booklet.latest.js:1580//
-                updateMenu();
-            },
-            removePage = function(index) {
-                // validate inputs
-                if(index == "start") {
-                    index = 0;
-                } else if(index == "end") {
-                    index = originalPageTotal;
-                } else if(typeof index == "number") {
-                    if(index < 0 || index > originalPageTotal) { //js/jquery.booklet.latest.js:1590//
-                        return;
-                    }
-                } else if(typeof index == "undefined") {
-                    return;
-                }
-
-                // stop if removing last remaining page
+                // stop if removing last remaining page //js/jquery.booklet.latest.js:1600//
                 if(target.children('.b-page').length == 2 && target.find('.b-page-blank').length > 0) {
                     return;
-                } //js/jquery.booklet.latest.js:1600//
+                }
 
                 // remove page structure, revert to original order
                 destroyPages();
                 destroyControls();
 
                 if(index >= options.currentIndex) {
-                    if(index > 0 && (index % 2) != 0) {
+                    if(index > 0 && (index % 2) != 0) { //js/jquery.booklet.latest.js:1610//
                         options.currentIndex-=2;
                     }
-                    if(options.currentIndex < 0){ //js/jquery.booklet.latest.js:1610//
+                    if(options.currentIndex < 0){
                         options.currentIndex = 0;
                     }
                 }
 
                 var removedPage;
 
-                // remove page
+                // remove page //js/jquery.booklet.latest.js:1620//
                 if(options.closed && options.covers && index == originalPageTotal) {
                     // end of closed-covers book
-                    removedPage = target.children(':eq(' + (index - 1) + ')').remove(); //js/jquery.booklet.latest.js:1620//
+                    removedPage = target.children(':eq(' + (index - 1) + ')').remove();
                 } else if(options.closed && options.covers && index == 0) {
                     // start of closed-covers book
                     removedPage = target.children(':eq(' + index + ')').remove();
                 } else if(index == originalPageTotal) {
                     // end of book
                     removedPage = target.children(':eq(' + (index - 1) + ')').remove();
-                } else {
+                } else { //js/jquery.booklet.latest.js:1630//
                     removedPage = target.children(':eq(' + index + ')').remove();
                 }
- //js/jquery.booklet.latest.js:1630//
+
                 originalPageTotal = target.children().length;
 
                 // callback for adding page, returns options, index and the page node
                 callback = {
                     options: jQuery.extend({},options),
                     index: index,
-                    page: removedPage[0]
+                    page: removedPage[0] //js/jquery.booklet.latest.js:1640//
                 };
                 if(options.remove) {
-                    target.unbind(events.remove+'.booklet').bind(events.remove+'.booklet', options.remove); //js/jquery.booklet.latest.js:1640//
+                    target.unbind(events.remove+'.booklet').bind(events.remove+'.booklet', options.remove);
                 }
                 target.trigger(events.remove, callback);
 
                 removedPage = null;
                 isDisabled = false;
 
-                // recall initialize functions
+                // recall initialize functions //js/jquery.booklet.latest.js:1650//
                 initPages();
                 updatePages();
-                updateOptions(); //js/jquery.booklet.latest.js:1650//
+                updateOptions();
                 updateControlVisibility();
                 updateMenu();
             },
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // ANIMATION FUNCTIONS
-        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// //js/jquery.booklet.latest.js:1660//
 
             next = function () {
-                if(!isBusy) { //js/jquery.booklet.latest.js:1660//
+                if(!isBusy) {
                     if(isPlaying && options.currentIndex + 2 >= options.pageTotal) {
                         goToPage(0);
                     } else {
                         goToPage(options.currentIndex + 2);
                     }
                 }
-            },
+            }, //js/jquery.booklet.latest.js:1670//
             prev = function () {
                 if(!isBusy) {
-                    if(isPlaying && options.currentIndex - 2 < 0) { //js/jquery.booklet.latest.js:1670//
+                    if(isPlaying && options.currentIndex - 2 < 0) {
                         goToPage(options.pageTotal - 2);
                     } else {
                         goToPage(options.currentIndex - 2);
                     }
                 }
             },
-            goToPage = function (newIndex) {
+            goToPage = function (newIndex) { //js/jquery.booklet.latest.js:1680//
                 var speed;
 
-                // moving forward (increasing number) //js/jquery.booklet.latest.js:1680//
+                // moving forward (increasing number)
                 if(newIndex > options.currentIndex && newIndex < options.pageTotal && newIndex >= 0 && !isBusy) {
                     isBusy = true;
                     diff = newIndex - options.currentIndex;
                     options.currentIndex = newIndex;
                     options.movingForward = true;
 
-                    // callback when starting booklet animation
+                    // callback when starting booklet animation //js/jquery.booklet.latest.js:1690//
                     callback = {
                         options: jQuery.extend({},options),
-                        index: newIndex, //js/jquery.booklet.latest.js:1690//
+                        index: newIndex,
                         pages: [pages[newIndex].contentNode, pages[newIndex+1].contentNode]
                     };
                     if(options.start) {
                         target.unbind(events.start+'.booklet').bind(events.start+'.booklet', options.start);
                     }
                     target.trigger(events.start, callback);
-
+ //js/jquery.booklet.latest.js:1700//
                     updateMenu();
                     if(newIndex == options.pageTotal - 2) updateControlVisibility();
-                    updateHash(options.currentIndex + 1, options); //js/jquery.booklet.latest.js:1700//
+                    updateHash(options.currentIndex + 1, options);
 
                     // set animation speed, depending if user dragged any distance or not
                     speed = p3drag === true ? options.speed * (p3.width() / pWidth) : speedH;
 
                     startPageAnimation(diff, true, sF, speed);
 
-                    // hide p2 as p3 moves across it
+                    // hide p2 as p3 moves across it //js/jquery.booklet.latest.js:1710//
                     if(options.closed && options.autoCenter && newIndex - diff == 0) {
                         p2.stop().animate(anim.p2closed, p3drag === true ? speed : speed*2, options.easing);
-                        p4.stop().animate(anim.p4closed, p3drag === true ? speed : speed*2, options.easing); //js/jquery.booklet.latest.js:1710//
+                        p4.stop().animate(anim.p4closed, p3drag === true ? speed : speed*2, options.easing);
                     } else {
                         p2.stop().animate(anim.p2, speed, p3drag === true ? options.easeOut : options.easeIn);
                     }
 
                     // if animating after a manual drag, calculate new speed and animate out
                     if(p3drag) {
-
+ //js/jquery.booklet.latest.js:1720//
                         p3.animate(anim.p3out, speed, options.easeOut);
                         p3wrap.animate(anim.p3wrapOut, speed, options.easeOut, function () {updateAfter()});
- //js/jquery.booklet.latest.js:1720//
+
                     } else {
 
                         p3.stop().animate(anim.p3in, speed, options.easeIn)
                             .animate(anim.p3out, speed, options.easeOut);
 
                         p3wrap.animate(anim.p3wrapIn, speed, options.easeIn)
-                            .animate(anim.p3wrapOut, speed, options.easeOut, function () {updateAfter()});
+                            .animate(anim.p3wrapOut, speed, options.easeOut, function () {updateAfter()}); //js/jquery.booklet.latest.js:1730//
                     }
 
-                    // moving backward (decreasing number) //js/jquery.booklet.latest.js:1730//
+                    // moving backward (decreasing number)
                 } else if(newIndex < options.currentIndex && newIndex < options.pageTotal && newIndex >= 0 && !isBusy) {
                     isBusy = true;
                     diff = options.currentIndex - newIndex;
                     options.currentIndex = newIndex;
                     options.movingForward = false;
 
-                    // callback when starting booklet animation
+                    // callback when starting booklet animation //js/jquery.booklet.latest.js:1740//
                     callback = {
                         options: jQuery.extend({},options),
-                        index: newIndex, //js/jquery.booklet.latest.js:1740//
+                        index: newIndex,
                         pages: [pages[newIndex].contentNode, pages[newIndex+1].contentNode]
                     };
                     if(options.start) {
                         target.unbind(events.start+'.booklet').bind(events.start+'.booklet', options.start);
                     }
                     target.trigger(events.start, callback);
-
+ //js/jquery.booklet.latest.js:1750//
                     updateMenu();
                     if(newIndex == 0) updateControlVisibility();
-                    updateHash(options.currentIndex + 1, options); //js/jquery.booklet.latest.js:1750//
+                    updateHash(options.currentIndex + 1, options);
 
                     // set animation speed, depending if user dragged any distance or not
                     speed = p0drag === true ? options.speed * (p0.width() / pWidth) : speedH;
 
                     startPageAnimation(diff, false, sB, speed);
 
-                    if(p0drag) {
+                    if(p0drag) { //js/jquery.booklet.latest.js:1760//
                         // hide p1 as p0 moves across it
                         p1.animate(anim.p1, speed, options.easeOut);
-                        p1wrap.animate(anim.p1wrap, speed, options.easeOut); //js/jquery.booklet.latest.js:1760//
+                        p1wrap.animate(anim.p1wrap, speed, options.easeOut);
 
                         if(options.closed && options.autoCenter && options.currentIndex == 0) {
                             p0.animate(anim.p0outClosed, speed, options.easeOut);
                             p2.stop().animate(anim.p2back, speed, options.easeOut);
                         }else{
                             p0.animate(anim.p0, speed, options.easeOut);
-                        }
+                        } //js/jquery.booklet.latest.js:1770//
 
                         p0wrap.animate(anim.p0wrapDrag, speed, options.easeOut, function () {updateAfter()});
-                    }else{ //js/jquery.booklet.latest.js:1770//
+                    }else{
                         // hide p1 as p0 moves across it
                         p1.animate(anim.p1, speed*2, options.easing);
                         p1wrap.animate(anim.p1wrap, speed*2, options.easing);
 
                         if(options.closed && options.autoCenter && options.currentIndex == 0) {
                             p0.animate(anim.p0in, speed, options.easeIn)
-                                .animate(anim.p0outClosed, speed, options.easeOut);
+                                .animate(anim.p0outClosed, speed, options.easeOut); //js/jquery.booklet.latest.js:1780//
                             p2.stop().animate(anim.p2back, speed*2, options.easing);
                         }else{
-                            p0.animate(anim.p0in, speed, options.easeIn) //js/jquery.booklet.latest.js:1780//
+                            p0.animate(anim.p0in, speed, options.easeIn)
                                 .animate(anim.p0out, speed, options.easeOut);
                         }
 
                         p0wrap.animate(anim.p0wrapIn, speed, options.easeIn)
                             .animate(anim.p0wrapOut, speed, options.easeOut, function () {updateAfter()});
                     }
-                }
+                } //js/jquery.booklet.latest.js:1790//
             },
             startHoverAnimation = function (inc) {
-                if((options.hovers && options.overlays) || options.manual){ //js/jquery.booklet.latest.js:1790//
+                if((options.hovers && options.overlays) || options.manual){
                     if(inc) {
                         if(!isBusy && !isHoveringRight && !isHoveringLeft && !p3drag && options.currentIndex + 2 <= options.pageTotal - 2) {
                             // animate
                             p2.stop().animate(anim.hover.p2, anim.hover.speed, options.easing);
                             p3.addClass('b-grab');
                             if(options.closed && options.autoCenter && options.currentIndex == 0) {
-                                p3.stop().animate(anim.hover.p3closed, anim.hover.speed, options.easing);
+                                p3.stop().animate(anim.hover.p3closed, anim.hover.speed, options.easing); //js/jquery.booklet.latest.js:1800//
                             } else {
                                 p3.stop().animate(anim.hover.p3, anim.hover.speed, options.easing);
-                            } //js/jquery.booklet.latest.js:1800//
+                            }
                             p3wrap.stop().animate(anim.hover.p3wrap, anim.hover.speed, options.easing);
                             if(options.shadows && !$.support.opacity) {
                                 sF.css({'right': 'auto', 'left': '-40%'});
                             }
                             isHoveringRight = true;
                         }
-                    } else {
+                    } else { //js/jquery.booklet.latest.js:1810//
                         if(!isBusy && !isHoveringLeft && !isHoveringRight && !p0drag && options.currentIndex - 2 >= 0) {
                             // animate
-                            p1.stop().animate(anim.hover.p1, anim.hover.speed, options.easing); //js/jquery.booklet.latest.js:1810//
+                            p1.stop().animate(anim.hover.p1, anim.hover.speed, options.easing);
                             p0.addClass('b-grab');
                             p1wrap.stop().animate(anim.hover.p1wrap, anim.hover.speed, options.easing);
                             p0.stop().animate(anim.hover.p0, anim.hover.speed, options.easing);
                             p0wrap.stop().animate(anim.hover.p0wrap, anim.hover.speed, options.easing);
                             if(options.shadows && !$.support.opacity) {
                                 sB.css({'left': -0.38 * pWidth});
-                            }
+                            } //js/jquery.booklet.latest.js:1820//
                             isHoveringLeft = true;
                         }
-                    } //js/jquery.booklet.latest.js:1820//
+                    }
                 }
             },
             endHoverAnimation = function (inc) {
                 if((options.hovers && options.overlays) || options.manual){
                     if(inc) {
                         if(!isBusy && isHoveringRight && !p3drag && options.currentIndex + 2 <= options.pageTotal - 2) {
-                            if(options.closed && options.autoCenter && options.currentIndex == 0) {
+                            if(options.closed && options.autoCenter && options.currentIndex == 0) { //js/jquery.booklet.latest.js:1830//
                                 p2.stop().animate(anim.hover.p2closedEnd, anim.hover.speed, options.easing);
                                 p3.stop().animate(anim.hover.p3closedEnd, anim.hover.speed, options.easing);
-                            } else { //js/jquery.booklet.latest.js:1830//
+                            } else {
                                 p2.stop().animate(anim.hover.p2end, anim.hover.speed, options.easing);
                                 p3.stop().animate(anim.hover.p3end, anim.hover.speed, options.easing);
                             }
                             p3wrap.stop().animate(anim.hover.p3wrapEnd, anim.hover.speed, options.easing);
                             if(options.shadows && !$.support.opacity) {
                                 sF.css({'left': 'auto'});
-                            }
+                            } //js/jquery.booklet.latest.js:1840//
                             isHoveringRight = false;
                         }
-                    } else { //js/jquery.booklet.latest.js:1840//
+                    } else {
                         if(!isBusy && isHoveringLeft && !p0drag && options.currentIndex - 2 >= 0) {
                             p1.stop().animate(anim.hover.p1end, anim.hover.speed, options.easing);
                             p1wrap.stop().animate(anim.hover.p1wrapEnd, anim.hover.speed, options.easing);
                             p0.stop().animate(anim.hover.p0end, anim.hover.speed, options.easing);
                             p0wrap.stop().animate(anim.hover.p0wrapEnd, anim.hover.speed, options.easing);
                             isHoveringLeft = false;
-                        }
+                        } //js/jquery.booklet.latest.js:1850//
                     }
                 }
-            }, //js/jquery.booklet.latest.js:1850//
+            },
             startPageAnimation = function (diff, inc, shadow, speed) {
                 // setup content
                 if(inc && diff > 2) {
 
                     // initialize next 2 pages, if jumping forward in the book
                     target.find('.b-p3, .b-p4').removeClass('b-p3 b-p4').hide();
-                    target.find('.b-page-' + options.currentIndex).addClass('b-p3').show().stop().css(css.p3);
+                    target.find('.b-page-' + options.currentIndex).addClass('b-p3').show().stop().css(css.p3); //js/jquery.booklet.latest.js:1860//
                     target.find('.b-page-' + (options.currentIndex + 1)).addClass('b-p4').show().css(css.p4);
                     target.find('.b-page-' + options.currentIndex + ' .b-wrap').show().css(css.wrap);
-                    target.find('.b-page-' + (options.currentIndex + 1) + ' .b-wrap').show().css(css.wrap); //js/jquery.booklet.latest.js:1860//
+                    target.find('.b-page-' + (options.currentIndex + 1) + ' .b-wrap').show().css(css.wrap);
 
                     p3 = target.find('.b-p3');
                     p4 = target.find('.b-p4');
                     p3wrap = target.find('.b-p3 .b-wrap');
                     p4wrap = target.find('.b-p4 .b-wrap');
 
-                    if(options.closed && options.autoCenter && options.currentIndex - diff == 0) {
+                    if(options.closed && options.autoCenter && options.currentIndex - diff == 0) { //js/jquery.booklet.latest.js:1870//
                         p3.css({'left': pWidth});
                         p4.css({'left': 0});
-                    } //js/jquery.booklet.latest.js:1870//
+                    }
 
                     if(isHoveringRight) {
                         p3.css({'left': options.width - 40, 'width': 20, 'padding-left': 10});
                     }
 
                     if(options.shadows) {
-                        target.find('.b-shadow-f').remove();
+                        target.find('.b-shadow-f').remove(); //js/jquery.booklet.latest.js:1880//
                         sF = $(templates.sF).css(css.sF).appendTo(p3);
                         shadow = sF;
-                    } //js/jquery.booklet.latest.js:1880//
+                    }
 
                 } else if(!inc && diff > 2) {
 
                     // initialize previous 2 pages, if jumping backwards in the book
                     target.find('.b-pN, .b-p0').removeClass('b-pN b-p0').hide();
                     target.find('.b-page-' + options.currentIndex).addClass('b-pN').show().css(css.pN);
-                    target.find('.b-page-' + (options.currentIndex + 1)).addClass('b-p0').show().css(css.p0);
+                    target.find('.b-page-' + (options.currentIndex + 1)).addClass('b-p0').show().css(css.p0); //js/jquery.booklet.latest.js:1890//
                     target.find('.b-page-' + options.currentIndex + ' .b-wrap').show().css(css.wrap);
                     target.find('.b-page-' + (options.currentIndex + 1) + ' .b-wrap').show().css(css.wrap);
- //js/jquery.booklet.latest.js:1890//
+
                     pN = target.find('.b-pN');
                     p0 = target.find('.b-p0');
                     pNwrap = target.find('.b-pN .b-wrap');
                     p0wrap = target.find('.b-p0 .b-wrap');
 
                     if(options.closed && options.autoCenter) {
-                        pN.css({'left': 0});
+                        pN.css({'left': 0}); //js/jquery.booklet.latest.js:1900//
                     }
                     p0wrap.css(css.p0wrap);
- //js/jquery.booklet.latest.js:1900//
+
                     if(isHoveringLeft) {
                         p0.css({left: 10, width: 40});
                         p0wrap.css({right: 10});
                     }
 
                     if(options.shadows) {
-                        target.find('.b-shadow-b, .b-shadow-f').remove();
+                        target.find('.b-shadow-b, .b-shadow-f').remove(); //js/jquery.booklet.latest.js:1910//
                         sB = $(templates.sB).appendTo(p0).css(css.sB);
                         shadow = sB;
-                    } //js/jquery.booklet.latest.js:1910//
+                    }
                 }
 
                 // update page visibility
                 // if moving to start and end of book
                 if(options.closed) {
                     if(!inc && options.currentIndex == 0) {
-                        pN.hide();
+                        pN.hide(); //js/jquery.booklet.latest.js:1920//
                     } else if(!inc) {
                         pN.show();
-                    } //js/jquery.booklet.latest.js:1920//
+                    }
                     if(inc && options.currentIndex >= options.pageTotal - 2) {
                         p4.hide();
                     } else if(inc) {
                         p4.show();
                     }
                 }
-
+ //js/jquery.booklet.latest.js:1930//
                 // init shadows
                 if(options.shadows) {
-                    // check for opacity support -> animate shadow overlay on moving slide //js/jquery.booklet.latest.js:1930//
+                    // check for opacity support -> animate shadow overlay on moving slide
                     if($.support.opacity) {
                         if(!p3drag && !p0drag) {
                             shadow.animate({opacity: 1}, speed, options.easeIn);
                         }
                         shadow.animate({opacity: 0}, speed, options.easeOut);
                     } else {
-                        if(inc) {
+                        if(inc) { //js/jquery.booklet.latest.js:1940//
                             shadow.animate({right: options.shadowTopFwdWidth}, speed*2, options.easeIn);
                         } else {
-                            shadow.animate({left: options.shadowTopBackWidth}, speed*2, options.easeIn); //js/jquery.booklet.latest.js:1940//
+                            shadow.animate({left: options.shadowTopBackWidth}, speed*2, options.easeIn);
                         }
                     }
                 }
 
                 // init position animation
                 if(options.closed && options.autoCenter) {
-                    if(options.currentIndex == 0) {
+                    if(options.currentIndex == 0) { //js/jquery.booklet.latest.js:1950//
                         p3.hide();
                         p4.hide();
-                        target.animate({width: pWidth}, !p3drag && !p0drag ? speed*2 : speed, options.easing); //js/jquery.booklet.latest.js:1950//
+                        target.animate({width: pWidth}, !p3drag && !p0drag ? speed*2 : speed, options.easing);
                     } else if(options.currentIndex >= options.pageTotal - 2) {
                         p0.hide();
                         pN.hide();
                         target.animate({width: pWidth}, speed*2, options.easing);
                     } else {
                         target.animate({width: options.width}, speed*2, options.easing);
-                    }
+                    } //js/jquery.booklet.latest.js:1960//
                 }
 
-            }, //js/jquery.booklet.latest.js:1960//
+            },
             updateAfter = function () {
                 updatePages();
                 updateMenu();
                 updateControlVisibility();
                 isBusy = false;
 
-                // callback when ending booklet animation
+                // callback when ending booklet animation //js/jquery.booklet.latest.js:1970//
                 callback = {
                     options: jQuery.extend({},options),
-                    index: options.currentIndex, //js/jquery.booklet.latest.js:1970//
+                    index: options.currentIndex,
                     pages: [pages[options.currentIndex].contentNode, pages[options.currentIndex+1].contentNode]
                 };
                 if(options.change) {
                     target.unbind(events.change+'.booklet').bind(events.change+'.booklet', options.change);
                 }
                 target.trigger(events.change, callback);
-            };
+            }; //js/jquery.booklet.latest.js:1980//
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        // PUBLIC FUNCTIONS //js/jquery.booklet.latest.js:1980//
+        // PUBLIC FUNCTIONS
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         return {
             init: init,
             enable: enable,
             disable: disable,
-            destroy: destroy,
+            destroy: destroy, //js/jquery.booklet.latest.js:1990//
             next: next,
             prev: prev,
-            gotopage: function (index) { //js/jquery.booklet.latest.js:1990//
+            gotopage: function (index) {
                 if(typeof index === 'string') {
                     // validate inputs
                     if(index == "start") {
                         index = 0;
                     } else if(index == "end") {
                         index = originalPageTotal - 1;
-                    }
+                    } //js/jquery.booklet.latest.js:2000//
                 } else if(typeof index === "number") {
                     if(index < 0 || index >= originalPageTotal) {
-                        return; //js/jquery.booklet.latest.js:2000//
+                        return;
                     }
                 } else if(typeof index === "undefined") {
                     return;
                 }
                 // adjust for odd page
                 if(index % 2 != 0) {
-                    index -= 1;
+                    index -= 1; //js/jquery.booklet.latest.js:2010//
                 }
                 // adjust for booklet direction
-                if(options.direction == directions.rightToLeft) { //js/jquery.booklet.latest.js:2010//
+                if(options.direction == directions.rightToLeft) {
                     index = Math.abs(index - options.pageTotal) - 2;
                 }
                 goToPage(index);
             },
             add: addPage,
             remove: removePage,
-            option: function(name, value) {
+            option: function(name, value) { //js/jquery.booklet.latest.js:2020//
                 if(typeof name === 'string') {
                     // if option exists
-                    if(options[name]) { //js/jquery.booklet.latest.js:2020//
+                    if(options[name]) {
                         if(typeof value !== 'undefined'){
                             // if value is sent in, set the option value and update options
                             options[name] = value;
                             updateOptions();
                         } else {
                             // if no value sent in, get the current option value
-                            return options[name];
+                            return options[name]; //js/jquery.booklet.latest.js:2030//
                         }
                     } else {
-                        $.error('Option "' +  name + '" does not exist on jQuery.booklet.'); //js/jquery.booklet.latest.js:2030//
+                        $.error('Option "' +  name + '" does not exist on jQuery.booklet.');
                     }
                 } else if(typeof name === 'object'){
                     // if sending in an object, update options
                     updateOptions(name);
                 } else if(typeof name === 'undefined' || !name) {
                     // return a copy of the options object, to avoid changes
-                    return jQuery.extend({},options);
+                    return jQuery.extend({},options); //js/jquery.booklet.latest.js:2040//
                 }
             }
-        } //js/jquery.booklet.latest.js:2040//
+        }
     }
 
     // define default options
     $.fn.booklet.defaults = {
         name:                 null,                            // name of the booklet to display in the document title bar
         width:                600,                             // container width
-        height:               400,                             // container height
+        height:               400,                             // container height //js/jquery.booklet.latest.js:2050//
         speed:                1000,                            // speed of the transition between pages
         direction:            'LTR',                           // direction of the overall content organization, default LTR, left to right, can be RTL for languages which read right to left
-        startingPage:         0,                               // index of the first page to be displayed //js/jquery.booklet.latest.js:2050//
+        startingPage:         0,                               // index of the first page to be displayed
         easing:               'easeInOutQuad',                 // easing method for complete transition
         easeIn:               'easeInQuad',                    // easing method for first half of transition
         easeOut:              'easeOutQuad',                   // easing method for second half of transition
 
         closed:               false,                           // start with the book "closed", will add empty pages to beginning and end of book
         closedFrontTitle:     'Beginning',                     // used with "closed", "menu" and "pageSelector", determines title of blank starting page
-        closedFrontChapter:   'Beginning of Book',             // used with "closed", "menu" and "chapterSelector", determines chapter name of blank starting page
+        closedFrontChapter:   'Beginning of Book',             // used with "closed", "menu" and "chapterSelector", determines chapter name of blank starting page //js/jquery.booklet.latest.js:2060//
         closedBackTitle:      'End',                           // used with "closed", "menu" and "pageSelector", determines chapter name of blank ending page
         closedBackChapter:    'End of Book',                   // used with "closed", "menu" and "chapterSelector", determines chapter name of blank ending page
-        covers:               false,                           // used with "closed", makes first and last pages into covers, without page numbers (if enabled) //js/jquery.booklet.latest.js:2060//
+        covers:               false,                           // used with "closed", makes first and last pages into covers, without page numbers (if enabled)
         autoCenter:           false,                           // used with "closed", makes book position in center of container when closed
 
         pagePadding:          10,                              // padding for each page wrapper
         pageNumbers:          true,                            // display page numbers on each page
         pageBorder:           0,                               // size of the border around each page
 
-        manual:               true,                            // enables manual page turning, requires jQuery UI to function
+        manual:               true,                            // enables manual page turning, requires jQuery UI to function //js/jquery.booklet.latest.js:2070//
         hovers:               true,                            // enables preview page-turn hover animation, shows a small preview of previous or next page on hover
         hoverWidth:           50,                              // default width for page-turn hover preview
-        hoverSpeed:           500,                             // default speed for page-turn hover preview //js/jquery.booklet.latest.js:2070//
+        hoverSpeed:           500,                             // default speed for page-turn hover preview
         hoverThreshold:       0.25,                            // default percentage used for manual page dragging, sets the percentage amount a drag must be before moving next or prev
         hoverClick:           true,                            // enables hovered arreas to be clicked when using manual page turning
         overlays:             false,                           // enables navigation using a page sized overlay, when enabled links inside the content will not be clickable
         tabs:                 false,                           // adds tabs along the top of the pages
         tabWidth:             60,                              // set the width of the tabs
         tabHeight:            20,                              // set the height of the tabs
-        nextControlText:      'Next',                          // inline text for all 'next' controls
+        nextControlText:      'Next',                          // inline text for all 'next' controls //js/jquery.booklet.latest.js:2080//
         previousControlText:  'Previous',                      // inline text for all 'previous' controls
         nextControlTitle:     'Next Page',                     // text for title attributes of all 'next' controls
-        previousControlTitle: 'Previous Page',                 // text for title attributes of all 'previous' controls //js/jquery.booklet.latest.js:2080//
+        previousControlTitle: 'Previous Page',                 // text for title attributes of all 'previous' controls
         arrows:               false,                           // adds arrow overlays over the book edges
         arrowsHide:           false,                           // auto hides arrows when controls are not hovered
         cursor:               'pointer',                       // cursor css setting for side bar areas
 
         hash:                 false,                           // enables navigation using a hash string, ex: #/page/1 for page 1, will affect all booklets with 'hash' enabled
         hashTitleText:        " - Page ",                      // text which forms the hash page title, ex: (Name)" - Page "(1)
-        keyboard:             true,                            // enables navigation with arrow keys (left: previous, right: next)
+        keyboard:             true,                            // enables navigation with arrow keys (left: previous, right: next) //js/jquery.booklet.latest.js:2090//
         next:                 null,                            // selector for element to use as click trigger for next page
         prev:                 null,                            // selector for element to use as click trigger for previous page
-        auto:                 false,                           // enables automatic navigation, requires "delay" //js/jquery.booklet.latest.js:2090//
+        auto:                 false,                           // enables automatic navigation, requires "delay"
         delay:                5000,                            // amount of time between automatic page flipping
         pause:                null,                            // selector for element to use as click trigger for pausing auto page flipping
         play:                 null,                            // selector for element to use as click trigger for restarting auto page flipping
 
         menu:                 null,                            // selector for element to use as the menu area, required for 'pageSelector'
         pageSelector:         false,                           // enables navigation with a drop-down menu of pages, requires 'menu'
-        chapterSelector:      false,                           // enables navigation with a drop-down menu of chapters, determined by the "rel" attribute, requires 'menu'
+        chapterSelector:      false,                           // enables navigation with a drop-down menu of chapters, determined by the "rel" attribute, requires 'menu' //js/jquery.booklet.latest.js:2100//
 
         shadows:              true,                            // display shadows on page animations
-        shadowTopFwdWidth:    166,                             // shadow width for top forward animation //js/jquery.booklet.latest.js:2100//
+        shadowTopFwdWidth:    166,                             // shadow width for top forward animation
         shadowTopBackWidth:   166,                             // shadow width for top back animation
         shadowBtmWidth:       50,                              // shadow width for bottom shadow
 
         create:               null,                            // called when booklet has been created
         start:                null,                            // called when booklet starts to change pages
         change:               null,                            // called when booklet has finished changing pages
-        add:                  null,                            // called when booklet has added a page
+        add:                  null,                            // called when booklet has added a page //js/jquery.booklet.latest.js:2110//
         remove:               null                             // called when booklet has removed a page
     }
- //js/jquery.booklet.latest.js:2110//
+
 })(jQuery);
 // End js/jquery.booklet.latest.js
 
@@ -2321,7 +2324,7 @@ $(function() {
         loaded[ i ] = true;
     }
     for( var i=from; i<pages; i++ ){ //js/book.js:10//
-        $("<div>").html('<img src="images/thumbs/' + i + '.png" class="pageContent"/>').appendTo("#mybook");
+        $("<div >").html('<img src="images/thumbs/' + i + '.png" class="pageContent"/>').appendTo("#mybook");
     }
     
     var h = 819;
@@ -2343,54 +2346,58 @@ $(function() {
         keyboard: true, //js/book.js:30//
         pageNumbers: false,
         hash: true,
-        
+        // tabs: true,
+        pageSelector: true,
+        chapterSelector: false,
+        menu: '#custom-menu',
+
         nextControlText:      '下一页',             
         previousControlText:  '上一页',             
-        nextControlTitle:     '下一页',             
+        nextControlTitle:     '下一页',              //js/book.js:40//
         previousControlTitle: '上一页',   
         hashTitleText:        " - 页 ",     
-        closedFrontTitle:     '开始',               
-        closedFrontChapter:   '第一页',              //js/book.js:40//
-        closedBackTitle:      '结束',               
+        closedFrontTitle:     '封面',     
+        closedFrontChapter:   '第一页',             
+        closedBackTitle:      '尾页',               
         closedBackChapter:    '最后一页',
         
         change: function(event, data) {
             onChangePage( event, data );
-        },
+        }, //js/book.js:50//
         
         create: function(event, data) {
             onChangePage( event, data );                       
-        } //js/book.js:50//
+        }
     });
     
     function onChangePage( event, data ){
         if ( !event || !data )
             return;
-        
+         //js/book.js:60//
         var index = data.index,
             leftPage = data.pages[1],
             rightPage = data.pages[0];
-             //js/book.js:60//
+            
         loadPage( index + 1, leftPage );
         loadPage( index , rightPage );        
     }
     
     function loadPage( num, ct ){
-        if ( num <=0 || num > pages )
+        if ( num <=0 || num > pages ) //js/book.js:70//
             return;
         
         if ( loaded[num] )
-            return;     //js/book.js:70//
+            return;    
         loaded[num] = true;
         
         (function(){
             $("<img>").attr("src", "images/pages/"+ num +".jpg").load( function(){
                 $(ct).children().hide();
-                $(this).addClass("pageContent").appendTo( ct );                
+                $(this).addClass("pageContent").appendTo( ct );                 //js/book.js:80//
             } );
         })();
         
-    } //js/book.js:80//
+    }
     
 }); 
 // End js/book.js
